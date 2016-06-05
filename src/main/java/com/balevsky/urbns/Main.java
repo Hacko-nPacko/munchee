@@ -6,6 +6,7 @@ import com.balevsky.urbns.graph.Node;
 import java.util.List;
 import java.util.Scanner;
 import java.util.StringJoiner;
+import java.util.function.Consumer;
 
 /**
  * Created by niakoi on 5/6/16.
@@ -27,15 +28,18 @@ public class Main {
             }
         }
 
-        for (Node node : graph.nodes()) {
-            List<Node> dependencies = graph.subGraph(node);
-            if (dependencies.size() > 1) {
-                StringJoiner output = new StringJoiner(" ");
-                for (Node dependency : dependencies) {
-                    output.add(dependency.getName());
-                }
-                System.out.println(output);
+        Consumer<List<Node>> printDependencies = ds -> {
+            StringJoiner output = new StringJoiner(" ");
+            for (Node dependency : ds) {
+                output.add(dependency.getName());
             }
-        }
+            System.out.println(output);
+        };
+
+        graph.nodes().stream().map(graph::dependencies).filter(ds -> ds.size() > 1).forEach(printDependencies);
+
+        System.out.println("inverse");
+
+        graph.nodes().stream().map(graph::inverseDependencies).filter(ds -> ds.size() > 1).forEach(printDependencies);
     }
 }
