@@ -74,4 +74,8 @@ public class Graph {
 
         return new ArrayList<>();
     }
+
+    public List<Node> nodes() {
+        return new ArrayList<>(nodes.values());
+    }
 }
