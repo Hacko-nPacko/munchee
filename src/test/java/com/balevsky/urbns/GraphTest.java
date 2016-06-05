@@ -46,11 +46,6 @@ public class GraphTest {
     }
 
     @Test
-    public void testRefOrName() {
-        Assert.assertEquals("reference or name subGraphs", graph.subGraph(A), graph.subGraph("A"));
-    }
-
-    @Test
     public void testSubGraphs() {
         testSubGraph(graph, A, 7, A, B, C, G, E, F, H);
         testSubGraph(graph, B, 6, B, C, G, E, F, H);

@@ -22,11 +22,9 @@ public class Graph {
 
     // add an edge between 2 nodes
     public void addEdge(Node from, Node to) {
-        from.addEdge(to);
-    }
-
-    public List<Node> subGraph(String name) {
-        return subGraph(nodes.get(name));
+        Edge edge = new Edge(from, to);
+        from.addEdge(edge);
+        to.addEdge(edge);
     }
 
     // build a subgraph with node as root
@@ -40,11 +38,35 @@ public class Graph {
         return new ArrayList<>(nodes);
     }
 
+    // build an inverse subgraph with node as root
+    public List<Node> inverseSubGraph(Node node) {
+        if (node == null) {
+            return new ArrayList<>();
+        }
+        LinkedHashSet<Node> nodes = new LinkedHashSet<>();
+        node.inverseSubGraph(nodes);
+
+        return new ArrayList<>(nodes);
+    }
+
     // build the dependency list of `node` (omitting node itself)
     // list is alphabetically sorted (as in the test results)
     // TODO consult?
     public List<Node> dependencies(Node node) {
         List<Node> nodes = subGraph(node);
+        if (nodes.size() > 1) {
+            TreeSet<Node> dependencies = new TreeSet<>(nodes.subList(1, nodes.size()));
+            return new ArrayList<>(dependencies);
+        }
+
+        return new ArrayList<>();
+    }
+
+    // build the inverse dependency list of `node` (omitting node itself)
+    // list is alphabetically sorted (as in the test results)
+    // TODO consult?
+    public List<Node> inverseDependencies(Node node) {
+        List<Node> nodes = inverseSubGraph(node);
         if (nodes.size() > 1) {
             TreeSet<Node> dependencies = new TreeSet<>(nodes.subList(1, nodes.size()));
             return new ArrayList<>(dependencies);
